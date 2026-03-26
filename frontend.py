@@ -14,8 +14,6 @@ st.set_page_config(
     layout="wide"
 )
 
-API_URL = "https://your-app-name.onrender.com"  # <-- CHANGE THIS
-
 
 # ==============================
 # PREMIUM CSS
