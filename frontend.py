@@ -135,6 +135,16 @@ if selected == "Ask AI":
                 )
                 data = response.json()
                 answer = data.get("personalized_news", [])
+                if not answer:
+                    st.warning("No news found for this topic.")
+                else:
+                    for article in answer:
+                        st.markdown(f"""
+                        <div class="glass">
+                            <h4>{article.get("title","No Title")}</h4>
+                            <p>{article.get("summary","No Summary")}</p>
+                        </div>
+                        """, unsafe_allow_html=True)
             except Exception as e:
                 st.error(f"Backend error: {e}")
                 answer = []
