@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 # IMPORTS UPDATED FOR YOUR FOLDER NAMES
 from News import get_news
@@ -6,7 +7,13 @@ from Ai import summarize_news, news_chat
 from personalization import filter_news
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def home():
