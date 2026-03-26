@@ -4,119 +4,139 @@ from streamlit_option_menu import option_menu
 
 API_URL = "https://ai-news-navigator-et-ai-hackathon.onrender.com"
 
-# ---------- PAGE CONFIG ----------
+# ==============================
+# PAGE CONFIG
+# ==============================
+
 st.set_page_config(
     page_title="AI News Navigator",
     page_icon="🧠",
     layout="wide"
 )
 
-# ---------- CUSTOM CSS (PREMIUM LOOK) ----------
+API_URL = "https://your-app-name.onrender.com"  # <-- CHANGE THIS
+
+
+# ==============================
+# PREMIUM CSS
+# ==============================
+
 st.markdown("""
 <style>
 
-body {
-    background-color: #0e1117;
-}
-
-.main {
-    background-color: #0e1117;
-}
-
-h1, h2, h3 {
+/* Background */
+.stApp {
+    background: linear-gradient(135deg, #0f172a, #020617);
     color: white;
 }
 
-.news-card {
+/* Title Gradient */
+.big-title {
+    font-size: 42px;
+    font-weight: 700;
+    text-align: center;
+    background: linear-gradient(90deg,#38bdf8,#a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Glass Card */
+.glass {
     background: rgba(255,255,255,0.05);
     padding: 20px;
     border-radius: 15px;
+    backdrop-filter: blur(12px);
     margin-bottom: 15px;
-    backdrop-filter: blur(10px);
     border: 1px solid rgba(255,255,255,0.1);
 }
 
-.ai-box {
-    background: linear-gradient(135deg,#1f2937,#111827);
-    padding: 20px;
-    border-radius: 15px;
-    border: 1px solid rgba(255,255,255,0.1);
+/* Buttons */
+.stButton>button {
+    border-radius: 10px;
+    background: linear-gradient(90deg,#6366f1,#8b5cf6);
+    color: white;
+    border: none;
+    padding: 10px 18px;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# ---------- SIDEBAR ----------
+
+# ==============================
+# HEADER
+# ==============================
+
+st.markdown('<p class="big-title">🧠 AI News Navigator</p>', unsafe_allow_html=True)
+st.caption("🚀 AI-Powered Personalized News Experience")
+
+
+# ==============================
+# SIDEBAR MENU
+# ==============================
+
 with st.sidebar:
-
-    st.title("🧠 AI News")
-
     selected = option_menu(
         "Navigation",
-        ["News Feed", "AI Assistant"],
-        icons=["newspaper", "robot"],
+        ["Personalized News", "Ask AI"],
+        icons=["newspaper", "chat-dots"],
         default_index=0,
     )
 
-    topic = st.selectbox(
-        "Choose Interest",
-        ["technology", "startup", "stocks", "economy"]
-    )
 
-# ---------- HEADER ----------
-st.title("🧠 AI News Navigator")
-st.caption("Your Personalized AI Intelligence Briefing")
+# ==============================
+# NEWS SECTION
+# ==============================
 
-# ==================================================
-# NEWS FEED PAGE
-# ==================================================
-
-if selected == "News Feed":
+if selected == "Personalized News":
 
     st.header("📰 Personalized News")
 
-    if st.button("✨ Generate My News Briefing"):
+    interest = st.text_input("Enter your interest", "technology")
 
-        response = requests.get(f"{API_URL}/news/{topic}")
-        data = response.json()
+    if st.button("Get News"):
 
-        for article in data["personalized_news"]:
+        with st.spinner("🧠 AI is analyzing news..."):
 
-            st.markdown(f"""
-            <div class="news-card">
-                <h3>{article['title']}</h3>
-                <p>{article['summary']}</p>
-                <a href="{article['url']}" target="_blank">
-                    Read Full Article →
-                </a>
-            </div>
-            """, unsafe_allow_html=True)
+            try:
+                response = requests.get(f"{API_URL}/news/{interest}")
+                data = response.json()
 
-# ==================================================
-# AI ASSISTANT PAGE
-# ==================================================
+                for article in data["results"]:
+                    st.markdown(f"""
+                    <div class="glass">
+                        <h4>{article["title"]}</h4>
+                        <p>{article["summary"]}</p>
+                    </div>
+                    """, unsafe_allow_html=True)
 
-if selected == "AI Assistant":
+            except:
+                st.error("⚠️ Backend not reachable. Check API URL.")
 
-    st.header("🤖 Ask AI About Today's News")
 
-    question = st.text_input(
-        "Ask anything about current news"
-    )
+# ==============================
+# AI CHAT SECTION
+# ==============================
 
-    if st.button("Ask AI") and question:
+if selected == "Ask AI":
 
-        params = {
-            "question": question,
-            "topic": topic
-        }
+    st.header("💬 Ask AI About News")
 
-        response = requests.get(f"{API_URL}/ask", params=params)
-        answer = response.json()
+    query = st.text_input("Ask anything about news")
 
-        st.markdown(f"""
-        <div class="ai-box">
-            <h4>AI Insight</h4>
-            <p>{answer['answer']}</p>
-        </div>
-        """, unsafe_allow_html=True)
+    if st.button("Ask AI"):
+
+        with st.spinner("🤖 Thinking..."):
+
+            try:
+                response = requests.get(f"{API_URL}/chat/{query}")
+                answer = response.json()["response"]
+
+                st.markdown(f"""
+                <div class="glass">
+                    🤖 {answer}
+                </div>
+                """, unsafe_allow_html=True)
+
+            except:
+                st.error("⚠️ Could not connect to AI service.")
