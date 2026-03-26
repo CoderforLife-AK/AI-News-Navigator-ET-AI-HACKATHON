@@ -130,10 +130,16 @@ if selected == "Ask AI":
         with st.spinner("🤖 Thinking..."):
             try:
                 response = requests.get(
-                    f"{API_URL}/news/{query}",
+                    f"{API_URL}/news/{query.strip()}",
                     timeout=60
                 )
-                data = response.json()
+                try:
+                    data = response.json()
+                except Exception:
+                    st.error("Backend did not return JSON.")
+                    st.text(response.text)
+                    st.stop()
+                    
                 answer = data.get("personalized_news", [])
                 if not answer:
                     st.warning("No news found for this topic.")
