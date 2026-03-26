@@ -97,13 +97,13 @@ if selected == "Personalized News":
         with st.spinner("🧠 AI is analyzing news..."):
 
             try:
-                response = response = requests.get(
+                response = requests.get(
                     f"{API_URL}/news/{interest}",
                     timeout=60
                 )
                 data = response.json()
 
-                for article in data["results"]:
+                for article in data["personalized_news"]:
                     st.markdown(f"""
                     <div class="glass">
                         <h4>{article["title"]}</h4>
@@ -128,19 +128,13 @@ if selected == "Ask AI":
     if st.button("Ask AI"):
 
         with st.spinner("🤖 Thinking..."):
-
             try:
-                response = response = requests.get(
+                response = requests.get(
                     f"{API_URL}/news/{interest}",
                     timeout=60
                 )
-                answer = response.json()["response"]
-
-                st.markdown(f"""
-                <div class="glass">
-                    🤖 {answer}
-                </div>
-                """, unsafe_allow_html=True)
-
-            except:
-                st.error("⚠️ Could not connect to AI service.")
+                data = response.json()
+                answer = data.get("personalized_news", [])
+            except Exception as e:
+                st.error(f"Backend error: {e}")
+                answer = []
