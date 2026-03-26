@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 from streamlit_option_menu import option_menu
 
-API_URL = "http://127.0.0.1:8000"
+API_URL = "https://ai-news-navigator-et-ai-hackathon.onrender.com"
 
 # ---------- PAGE CONFIG ----------
 st.set_page_config(
