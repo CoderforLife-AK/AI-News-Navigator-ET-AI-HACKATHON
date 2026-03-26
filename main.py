@@ -28,8 +28,11 @@ def personalized_news(interest: str):
 
     results = []
 
-    for article in news:
-        summary = summarize_news(article["description"])
+    for article in news[:3]:
+        try:
+            summary = summarize_news(article["description"])
+        except:
+            summary = article["description"]
 
         results.append({
             "title": article["title"],
