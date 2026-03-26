@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 
 # IMPORTS UPDATED FOR YOUR FOLDER NAMES
-from Services.News import get_news
-from Services.Ai import summarize_news, news_chat
+from News import get_news
+from Ai import summarize_news, news_chat
 from personalization import filter_news
 
 app = FastAPI()
