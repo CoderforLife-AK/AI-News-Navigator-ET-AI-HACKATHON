@@ -99,7 +99,7 @@ if selected == "Personalized News":
             try:
                 response = requests.get(
                     f"{API_URL}/news/{interest}",
-                    timeout=60
+                    timeout=90
                 )
                 data = response.json()
 
@@ -131,7 +131,7 @@ if selected == "Ask AI":
             try:
                 response = requests.get(
                     f"{API_URL}/news/{query.strip()}",
-                    timeout=60
+                    timeout=90
                 )
                 try:
                     data = response.json()
