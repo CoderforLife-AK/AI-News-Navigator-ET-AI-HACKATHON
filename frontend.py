@@ -97,7 +97,10 @@ if selected == "Personalized News":
         with st.spinner("🧠 AI is analyzing news..."):
 
             try:
-                response = requests.get(f"{API_URL}/news/{interest}")
+                response = response = requests.get(
+                    f"{API_URL}/news/{interest}",
+                    timeout=60
+                )
                 data = response.json()
 
                 for article in data["results"]:
@@ -127,7 +130,10 @@ if selected == "Ask AI":
         with st.spinner("🤖 Thinking..."):
 
             try:
-                response = requests.get(f"{API_URL}/chat/{query}")
+                response = response = requests.get(
+                    f"{API_URL}/news/{interest}",
+                    timeout=60
+                )
                 answer = response.json()["response"]
 
                 st.markdown(f"""
