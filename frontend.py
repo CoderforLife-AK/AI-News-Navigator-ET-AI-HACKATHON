@@ -130,7 +130,7 @@ if selected == "Ask AI":
         with st.spinner("🤖 Thinking..."):
             try:
                 response = requests.get(
-                    f"{API_URL}/news/{interest}",
+                    f"{API_URL}/news/{query}",
                     timeout=60
                 )
                 data = response.json()
