@@ -1,4 +1,3 @@
-Blame
 🧠 AI News Navigator
 Transforming overwhelming news streams into personalized AI-powered insights using FastAPI, Gemini AI, and real-time data processing.
 
